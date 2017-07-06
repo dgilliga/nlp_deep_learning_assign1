@@ -32,11 +32,10 @@ def softmax(x):
         # Matrix
         maxes = np.max(x, axis=1)
 
-        if maxes.shape[0] > 1:
-            maxes = np.reshape(maxes, (2, 1))
-        exps = np.exp(np.subtract(x, maxes))
-        x = exps / np.sum(exps, axis=1)
-
+        maxes =  np.reshape(maxes, (x.shape[0], 1))
+        exps = np.exp(x - maxes)
+        denom = np.reshape(np.sum(exps, axis=1), (x.shape[0], 1))
+        x = exps / denom
     else:
         # Vector
         exps = np.exp(x - np.max(x))
