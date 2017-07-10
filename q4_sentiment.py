@@ -3,6 +3,7 @@
 import argparse
 import numpy as np
 import matplotlib
+
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import itertools
@@ -49,7 +50,10 @@ def getSentenceFeatures(tokens, wordVectors, sentence):
     sentVector = np.zeros((wordVectors.shape[1],))
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+
+    for word in sentence:
+        sentVector += wordVectors[tokens[word]]
+    sentVector /= wordVectors.shape[0]
     ### END YOUR CODE
 
     assert sentVector.shape == (wordVectors.shape[1],)
@@ -61,9 +65,8 @@ def getRegularizationValues():
 
     Return a sorted list of values to try.
     """
-    values = None   # Assign a list of floats in the block below
     ### YOUR CODE HERE
-    raise NotImplementedError
+    values = [0.000000001,0.00000001,0.0000001,0.000001,0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0]  # Assign a list of floats in the block below
     ### END YOUR CODE
     return sorted(values)
 
@@ -87,7 +90,7 @@ def chooseBestModel(results):
     bestResult = None
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    bestResult = max(results, key=lambda x: x["dev"])
     ### END YOUR CODE
 
     return bestResult
@@ -95,7 +98,7 @@ def chooseBestModel(results):
 
 def accuracy(y, yhat):
     """ Precision for classifier """
-    assert(y.shape == yhat.shape)
+    assert (y.shape == yhat.shape)
     return np.sum(y == yhat) * 100.0 / y.size
 
 
@@ -153,7 +156,7 @@ def main(args):
     if args.yourvectors:
         _, wordVectors, _ = load_saved_params()
         wordVectors = np.concatenate(
-            (wordVectors[:nWords,:], wordVectors[nWords:,:]),
+            (wordVectors[:nWords, :], wordVectors[nWords:, :]),
             axis=1)
     elif args.pretrained:
         wordVectors = glove.loadWordVectors(tokens)
@@ -192,7 +195,7 @@ def main(args):
     for reg in regValues:
         print "Training for reg=%f" % reg
         # Note: add a very small number to regularization to please the library
-        clf = LogisticRegression(C=1.0/(reg + 1e-12))
+        clf = LogisticRegression(C=1.0 / (reg + 1e-12))
         clf.fit(trainFeatures, trainLabels)
 
         # Test on train set
