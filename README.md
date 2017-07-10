@@ -24,6 +24,7 @@ Part 4 Then uses the trained word vectors to do a sentiment analysis on sentence
 
 example error results from sentiment output where 0 is very negatiave and 4 is very positive
 Below sentence misclassifed as negative:
+
 4	1	at a time when half the so-called real movies are little more than live-action cartoons , it 's refreshing to see a cartoon that knows what it is , and knows the form 's history .
 
 Link to assignment: http://web.stanford.edu/class/cs224n/assignment1/assignment1.pdf
